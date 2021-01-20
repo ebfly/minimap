@@ -1,6 +1,9 @@
 class Map < ApplicationRecord
-  belongs_to :tweet
-
+  has_one_attached :image
   geocoded_by :address
-  after_validation :geocode
+  before_validation :geocode
+
+  with_options presence: true do
+    validates :latitude, :longitude, :title
+  end
 end
