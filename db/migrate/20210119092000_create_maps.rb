@@ -4,6 +4,7 @@ class CreateMaps < ActiveRecord::Migration[6.0]
       t.string :address
       t.float :latitude
       t.float :longitude
+      t.references :tweet,  null: false, foreign_key: true
       t.timestamps
     end
   end
