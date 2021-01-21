@@ -1,84 +1,87 @@
-<h2>mini-map</h2>
+<div class="minimap">
+  <h2>mini-map</h2>
 
-<input id="address" type="textbox" value="">
-<input type="button" value="検索" onclick="codeAddress()">
+  <input id="address" type="textbox" value="">
+  <input type="button" value="検索" onclick="codeAddress()">
 
-<%= form_with(model: @map, local: true) do |f| %>
-  <input type="hidden" name="map[address]" id="hidden_address">
-  <%= f.label :title, "タイトル" %>
-    <%= f.text_field :title %>
-  <%= f.label :comment, "コメント" %>
-    <%= f.text_field :comment %>
-  <div class="img-upload">
-    <div class="weight-bold-text">
-      画像
+  <div id='map'></div>
+  <style>
+    #map {
+      height: 600px;
+      width: 600px;
+    }
+  </style>
+
+  <%= form_with(model: @map, local: true) do |f| %>
+    <input type="hidden" name="map[address]" id="hidden_address">
+    <%= f.label :title, "タイトル" %>
+      <%= f.text_field :title %>
+    <%= f.label :comment, "コメント" %>
+      <%= f.text_field :comment %>
+    <div class="img-upload">
+      <div class="weight-bold-text">
+        画像
+      </div>
+      <div class="click-upload">
+        <p>
+          クリックしてファイルをアップロード
+        </p>
+        <%= f.file_field :image, id:"map-image" %>
+      </div>
     </div>
-    <div class="click-upload">
-      <p>
-        クリックしてファイルをアップロード
-      </p>
-      <%= f.file_field :image, id:"map-image" %>
-    </div>
-  </div>
-  <%= f.submit "保存" %>
-<% end %>
+    <%= f.submit "投稿" %>
+  <% end %>
+  <%#= render "maps/list" %>
+</div>
 
-<div id='map'></div>
-<style>
-  #map {
-    height: 600px;
-    width: 600px;
-  }
-</style>
 
-<script>
-  let map
-  let geocoder
-  let marker
 
-  function initMap() {
-    geocoder = new google.maps.Geocoder()
-    // デフォルト位置は東京
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {
-        lat: 35.681,
-        lng: 139.767
-      },
-      zoom: 12,
-    }); 
-    marker = new google.maps.Marker({
-    position:  {lat: 35.681, lng: 139.767},
-    map: map
-  });
-  }
-  function codeAddress() {
-    let inputAddress = document.getElementById('address').value;
+  <script>
+    let map
+    let geocoder
+    let marker
 
-    geocoder.geocode({
-      'address': inputAddress
-    }, function (results, status) {
-      if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-
-        var marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location
-        });
-
-        // タイトルフォームにデフォルト値として検索値を設定
-        let title = document.getElementById('map_title');
-        title.setAttribute("value", inputAddress);
-
-        // 検索値を隠しデータとしてセット
-        let hidden_address = document.getElementById('hidden_address');
-        hidden_address.setAttribute("value", inputAddress);
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
+    function initMap() {
+      geocoder = new google.maps.Geocoder()
+      // デフォルト位置は東京
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+          lat: 35.681,
+          lng: 139.767
+        },
+        zoom: 12,
+      }); 
+      marker = new google.maps.Marker({
+      position:  {lat: 35.681, lng: 139.767},
+      map: map
     });
-  }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API'] %>&callback=initMap" async defer>
-</script>
+    }
+    function codeAddress() {
+      let inputAddress = document.getElementById('address').value;
 
+      geocoder.geocode({
+        'address': inputAddress
+      }, function (results, status) {
+        if (status == 'OK') {
+          map.setCenter(results[0].geometry.location);
 
+          var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+          });
+
+          // タイトルフォームにデフォルト値として検索値を設定
+          let title = document.getElementById('map_title');
+          title.setAttribute("value", inputAddress);
+
+          // 検索値を隠しデータとしてセット
+          let hidden_address = document.getElementById('hidden_address');
+          hidden_address.setAttribute("value", inputAddress);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API'] %>&callback=initMap" async defer>
+  </script>

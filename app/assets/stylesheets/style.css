@@ -8,3 +8,31 @@
   border-radius: 3px;
   display: inline-block;
 }
+
+.lists {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1vw;
+}
+
+.item-lists>.list {
+  width: 37vh;
+  padding: 1vw;
+  background-color: #FFF;
+}
+
+.map-info {
+  background-color: #FFF;
+  color: black;
+  padding: 1vw;
+}
+
+.map-title {
+  font-size: 2.5vh;
+}
+.map-text {
+  font-size: 2.5vh;
+}
+

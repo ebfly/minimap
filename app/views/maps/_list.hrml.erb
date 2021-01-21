@@ -1,0 +1,19 @@
+<div class="map-list">
+  <% @maps.each do |map| %>
+    <li class='list'>
+      <%= link_to map_path(map.id) do %>
+        <div class='map-img-content'>
+          <%= image_tag map.image, class: 'map-img' %>
+        </div>
+        <div class='map-info'>
+          <h3 class='map-title'>
+            <%= map.title %>
+          </h3>
+          <h3 class='map-text'>
+            <%= map.text %>
+          </h3>
+        </div>
+      <% end %>
+    </li>
+  <% end %>
+</div>
